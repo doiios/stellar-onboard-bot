@@ -1,0 +1,36 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run conversation state machine + helper tests
+        run: npm test
+
+      - name: Lint check (no private-key patterns committed)
+        run: |
+          if grep -rEn "S[A-Z2-7]{55}" --include="*.js" src/ webapp/ 2>/dev/null | grep -v "SECRET_KEY_RE\|S..repeat"; then
+            echo "Possible secret key pattern found in source — failing build."
+            exit 1
+          fi
+          echo "No secret key patterns found."
