@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Connect your wallet — stellar-onboard-bot</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<style>
+  body { font-family: system-ui, sans-serif; max-width: 480px; margin: 40px auto; padding: 0 16px; color: #1a1a2e; }
+  button { background: #08b5e5; color: white; border: none; padding: 12px 20px; border-radius: 8px; font-size: 16px; cursor: pointer; }
+  button:disabled { opacity: 0.5; cursor: not-allowed; }
+  #status { margin-top: 16px; font-size: 14px; color: #444; white-space: pre-wrap; }
+  .warn { background: #fff4e5; border: 1px solid #f0b429; padding: 12px; border-radius: 8px; font-size: 13px; margin-bottom: 16px; }
+</style>
+</head>
+<body>
+  <h2>Connect your wallet to continue</h2>
+  <div class="warn">
+    This page never asks for your seed phrase or private key. Signing happens
+    inside your Freighter wallet extension. This site only ever sees your
+    <strong>public</strong> address and the transactions you explicitly approve.
+  </div>
+  <p id="context">Loading anchor details…</p>
+  <button id="connectBtn" disabled>Connect Freighter &amp; Continue</button>
+  <div id="status"></div>
+
+  <!-- Freighter's injected API (window.freighterApi) is provided by the
+       Freighter browser extension. We do not bundle or vendor any wallet
+       code ourselves. If the extension isn't installed, we tell the user
+       and link to the install page instead of proceeding. -->
+  <script src="./connect.js"></script>
+</body>
+</html>
